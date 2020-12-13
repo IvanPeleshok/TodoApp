@@ -1,0 +1,27 @@
+.detailsPage {
+    display: grid;
+    grid-template-columns: 280px;
+    background: white;
+    border-radius: 25px;
+    height: 300px;
+    padding: 20px;
+    box-sizing: border-box;
+    color: palevioletred;
+
+
+    .detailsTitle {
+        font-weight: 700;
+        color: palevioletred;
+        margin-bottom: 10px;
+    }
+
+    .label {
+        overflow: auto;
+
+        .title {
+            font-weight: 700;
+            color: palevioletred;
+        }
+    }
+
+}

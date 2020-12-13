@@ -1,0 +1,54 @@
+.createPage {
+
+    & .createForm {
+        max-width: 300px;
+
+        background: white;
+        padding: 25px;
+        border-radius: 25px;
+
+        display: grid;
+        grid-template-columns: 280px;
+        justify-content: center;
+
+
+        .createTitle {
+            font-weight: 700;
+            color: palevioletred;
+            margin-bottom: 10px;
+        }
+
+        .createInput {
+            border: none;
+            border-bottom: 1px solid palevioletred;
+            margin: 10px 0px;
+            width: 100%;
+            color: palevioletred;
+            padding: 5px 0px;
+            position: relative;
+
+            &::placeholder {
+                color: palevioletred;
+                position: absolute;
+
+            }
+
+        }
+
+        .createBtn {
+            background: palevioletred;
+            border-radius: 5px;
+            padding: 10px;
+
+            color: white;
+            font-weight: 600;
+        }
+
+        textarea {
+            resize: none;
+            overflow-y: auto;
+            width: 100%;
+            color: palevioletred;
+        }
+    }
+}

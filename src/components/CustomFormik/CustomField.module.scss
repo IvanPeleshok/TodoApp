@@ -1,0 +1,43 @@
+.fieldErrors {
+    text-align: center;
+    margin: 0px 0px 20px 0px;
+    color: red;
+    // font-weight: 700;
+    font-size: 14px;
+}
+
+.hasError {
+    border: none;
+    border-bottom: 1px solid red !important;
+}
+
+$sizeImage: 200px;
+
+.filePicker {
+    display: flex;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+    & input {
+        display: none;
+    }
+
+    & .imageHolder {
+        overflow: hidden;
+        cursor: pointer;
+        max-width: 188px;
+        max-height: 188px;
+        border-radius: 100%;
+
+
+
+        & img {
+            height: 100%;
+
+            object-fit: cover;
+            max-width: $sizeImage;
+            max-height: $sizeImage;
+        }
+    }
+}
