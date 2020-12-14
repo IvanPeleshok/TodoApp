@@ -1,6 +1,6 @@
 import { AxiosResponse, CancelToken } from "axios"
 import { todoAPI } from "../api/todo-api"
-import { ITask, StatusEnum } from "../interface/todo"
+import { FilterEnum, ITask, StatusEnum } from "../interface/todo"
 import { TInferActions, TBaseThunk } from "../types/redux"
 import { AlertifyStatusEnum } from "../types/types"
 import { showAlert } from "../utils/showAlert"
@@ -13,6 +13,7 @@ let initialState = {
   tasks: [] as Array<ITask>,
   details: {} as ITask,
   loading: false,
+  filter: "all" as FilterEnum,
 }
 
 export const todoReducer = (
@@ -21,9 +22,27 @@ export const todoReducer = (
 ): TInitialState => {
   switch (action.type) {
     case "TODO/SET_TASKS":
-      return {
-        ...state,
-        tasks: [...action.payload],
+      if (state.filter === FilterEnum.All) {
+        return {
+          ...state,
+          tasks: [...action.payload],
+        }
+      } else if (state.filter === FilterEnum.Done) {
+        return {
+          ...state,
+          tasks: [
+            ...action.payload.filter((task) => task.status === StatusEnum.Done),
+          ],
+        }
+      } else {
+        return {
+          ...state,
+          tasks: [
+            ...action.payload.filter(
+              (task) => task.status === StatusEnum.Doing
+            ),
+          ],
+        }
       }
     case "TODO/SET_TASK":
       return {
@@ -46,6 +65,21 @@ export const todoReducer = (
           ...state.tasks.splice(taskId + 1),
         ],
       }
+    case "TODO/LOADING_TRUE":
+      return {
+        ...state,
+        loading: true,
+      }
+    case "TODO/LOADING_FALSE":
+      return {
+        ...state,
+        loading: false,
+      }
+    case "TODO/SET_FILTER":
+      return {
+        ...state,
+        filter: action.payload,
+      }
     default:
       return state
   }
@@ -67,17 +101,22 @@ export const actions = {
       type: "TODO/SET_TASK",
       payload: { name, title, description, status },
     } as const),
-  setDoneTask: (id: string) =>
+  setStatusTask: (id: string) =>
     ({
       type: "TODO/SET_TASK_DONE",
       payload: id,
     } as const),
+  loadingTrue: () => ({ type: "TODO/LOADING_TRUE" } as const),
+  loadingFalse: () => ({ type: "TODO/LOADING_FALSE" } as const),
+  setFilter: (filter: FilterEnum) =>
+    ({ type: "TODO/SET_FILTER", payload: filter } as const),
 }
 
 export const getTasks = (CancelToken?: CancelToken): TThunk => async (
   dispatch
 ) => {
   try {
+    dispatch(actions.loadingTrue())
     const response = (await todoAPI.getTasks(CancelToken)) as AxiosResponse
     let data: Array<ITask> = []
     if (response.data !== null) {
@@ -87,6 +126,7 @@ export const getTasks = (CancelToken?: CancelToken): TThunk => async (
       }))
     }
     dispatch(actions.setTasks(data))
+    dispatch(actions.loadingFalse())
   } catch (error) {
     console.log("An error has occurred")
   }
@@ -97,9 +137,11 @@ export const getTask = (
   CancelToken?: CancelToken
 ): TThunk => async (dispatch) => {
   try {
+    dispatch(actions.loadingTrue())
     const response = await todoAPI.getTask(id, CancelToken)
     const { name, title, description, status } = response.data
     await dispatch(actions.setTask(name, title, description, status))
+    dispatch(actions.loadingFalse())
   } catch (error) {
     showAlert(AlertifyStatusEnum.error, "Не удалось загрузить задачи")
   }

@@ -2,7 +2,7 @@ import React, { memo, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { createTask, getTasks } from "../../../redux/todo-reducer"
 import { todoSelectors } from "../../../redux/selectors/selectors"
-import { Modal } from "../../Common/Modal/Modal"
+import { Modal } from "../Modal/Modal"
 import { StatusEnum } from "../../../interface/todo"
 
 export const Create = memo(() => {
@@ -14,8 +14,10 @@ export const Create = memo(() => {
     btn: "Создать задачу",
   }
 
+  const tasksExist = Object.keys(tasks).length
+
   useEffect(() => {
-    if (tasks.length === 0) {
+    if (!tasksExist) {
       dispatch(getTasks())
     }
   }, [])

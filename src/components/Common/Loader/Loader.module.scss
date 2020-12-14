@@ -1,12 +1,19 @@
+.loader {
+    top: 0;
+    left: 0;
+    width: 100%;
+    position: absolute;
+    height: 5px;
+    z-index: 10;
+}
+
 .progress {
     position: relative;
     height: 5px;
     display: block;
     width: 100%;
     background-color: #9197e1;
-    // border-radius: 2px;
     background-clip: padding-box;
-    // margin: 0.5rem 0 1rem 0;
     overflow: hidden;
 }
 

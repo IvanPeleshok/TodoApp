@@ -17,7 +17,7 @@ export const CustomButton: FC<ICustomButtom> = ({
 }) => {
   return (
     <button className={className} type={type} {...props}>
-      {isSubmitting ? "loading" : text}
+      {isSubmitting ? "Загрузка" : text}
     </button>
   )
 }

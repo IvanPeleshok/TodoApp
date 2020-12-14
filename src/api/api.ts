@@ -1,7 +1,5 @@
-import axios, { CancelToken, AxiosError } from "axios"
-import Cookies from "js-cookie"
+import axios, { AxiosError } from "axios"
 import { AlertifyStatusEnum } from "../types/types"
-import { converToFormData } from "../utils/apiFunctions"
 import { showAlert } from "../utils/showAlert"
 
 export let apiURL = "https://todoapp-873ef-default-rtdb.firebaseio.com/"
@@ -25,9 +23,4 @@ export const handleErr = async (err: AxiosError) => {
   }
 
   return err?.response
-}
-
-export enum ResultCode {
-  Success = 0,
-  Error = 1,
 }
