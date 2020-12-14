@@ -6,7 +6,7 @@ import { editTask, getTask, getTasks } from "../../../redux/todo-reducer"
 import { actions } from "../../../redux/todo-reducer"
 import Axios from "axios"
 import { Modal } from "../../Common/Modal/Modal"
-import { ITask } from "../../../interface/todo"
+import { ITask, StatusEnum } from "../../../interface/todo"
 
 interface IParams {
   id: string
@@ -36,7 +36,7 @@ export const Details = () => {
     dispatch(getTask(params.id, source.token))
     return () => {
       source.cancel()
-      dispatch(actions.setTask("", "", "", false))
+      dispatch(actions.setTask("", "", "", StatusEnum.Doing))
     }
   }, [params.id])
 

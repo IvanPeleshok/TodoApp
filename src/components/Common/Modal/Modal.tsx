@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react"
+import React, { FC } from "react"
 import s from "./Modal.module.scss"
 import { Formik, Form } from "formik"
 import * as yup from "yup"
@@ -7,13 +7,13 @@ import { Popup } from "../Popup/Popup"
 import { CustomButton } from "../../CustomFormik/CustomButton"
 import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
-import { ITask } from "../../../interface/todo"
+import { ITask, StatusEnum } from "../../../interface/todo"
 
 interface IInitialValues {
   name: string
   title: string
   description: string
-  done: boolean
+  status: StatusEnum
 }
 
 interface IProps {
@@ -59,7 +59,7 @@ export const Modal: FC<IProps> = ({ initial, actionFunc, infoAboutPage }) => {
           enableReinitialize={true}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             history.push("/todo/")
-            dispatch(actionFunc({ ...values}, ))
+            dispatch(actionFunc({ ...values }))
             setSubmitting(false)
             resetForm()
           }}

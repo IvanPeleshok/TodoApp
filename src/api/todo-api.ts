@@ -1,5 +1,5 @@
 import { CancelToken } from "axios"
-import { ITask } from "../interface/todo"
+import { ITask, StatusEnum } from "../interface/todo"
 import { handleErr, instance } from "./api"
 
 export const todoAPI = {
@@ -25,6 +25,13 @@ export const todoAPI = {
   editTask(data: ITask, id: string) {
     return instance
       .put(`/notes/${id}.json`, data)
+      .then((response) => response)
+      .catch((err) => handleErr(err))
+  },
+  toggleStatusTask(status: StatusEnum, id: string) {
+    console.log(status)
+    return instance
+      .put(`/notes/${id}/status.json`, JSON.stringify(status))
       .then((response) => console.log(response))
       .catch((err) => console.log(err))
   },
@@ -32,6 +39,6 @@ export const todoAPI = {
     return instance
       .delete(`/notes/${id}.json`)
       .then((response) => console.log(response))
-      .catch((err) => console.log(err))
+      .catch((err) => handleErr(err))
   },
 }

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { createTask, getTasks } from "../../../redux/todo-reducer"
 import { todoSelectors } from "../../../redux/selectors/selectors"
 import { Modal } from "../../Common/Modal/Modal"
+import { StatusEnum } from "../../../interface/todo"
 
 export const Create = memo(() => {
   const dispatch = useDispatch()
@@ -23,7 +24,7 @@ export const Create = memo(() => {
     name: "",
     title: "",
     description: "",
-    done: false,
+    status: StatusEnum.Doing,
   }
 
   return (

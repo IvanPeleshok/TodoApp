@@ -7,5 +7,5 @@ export const appSelectors = {
 export const todoSelectors = {
   getTasks: (state: TAppState) => state.todo.tasks,
   getTask: (state: TAppState) => state.todo.details,
-  getLoading: (state: TAppState) => state.todo.loading
+  getLoading: (state: TAppState) => state.todo.loading,
 }

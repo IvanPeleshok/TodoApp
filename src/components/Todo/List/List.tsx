@@ -9,6 +9,8 @@ import Axios from "axios"
 import DeleteIcon from "@material-ui/icons/Delete"
 import ListIcon from "@material-ui/icons/List"
 import DoneIcon from "@material-ui/icons/Done"
+import { todoAPI } from "../../../api/todo-api"
+import { ITask, StatusEnum } from "../../../interface/todo"
 
 export const List = memo(() => {
   const dispatch = useDispatch()
@@ -31,7 +33,16 @@ export const List = memo(() => {
     dispatch(deleteTask(id))
   }
 
+  let task: ITask | undefined
   const handleDone = (id: string) => {
+    task = tasks.find((task) => task.id === id)
+
+    if (task?.status === StatusEnum.Doing) {
+      todoAPI.toggleStatusTask(StatusEnum.Done, id)
+    } else {
+      todoAPI.toggleStatusTask(StatusEnum.Doing, id)
+    }
+
     dispatch(actions.setDoneTask(id))
   }
 
@@ -41,7 +52,9 @@ export const List = memo(() => {
         {tasks.map((task) => (
           <div
             key={task.id}
-            className={classnames(s.item, { [s.done]: task.done })}
+            className={classnames(s.item, {
+              [s.done]: task.status === StatusEnum.Done,
+            })}
           >
             <DoneIcon
               onClick={() => handleDone(task.id!)}

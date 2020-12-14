@@ -1,6 +1,6 @@
 import { AxiosResponse, CancelToken } from "axios"
 import { todoAPI } from "../api/todo-api"
-import { ITask } from "../interface/todo"
+import { ITask, StatusEnum } from "../interface/todo"
 import { TInferActions, TBaseThunk } from "../types/redux"
 import { AlertifyStatusEnum } from "../types/types"
 import { showAlert } from "../utils/showAlert"
@@ -31,17 +31,19 @@ export const todoReducer = (
         details: action.payload,
       }
     case "TODO/SET_TASK_DONE":
-      const taskDoneId = state.tasks.findIndex(
-        (task) => action.payload === task.id
-      )
-      const taskDone = state.tasks[taskDoneId]
-      taskDone.done = !taskDone.done
+      const taskId = state.tasks.findIndex((task) => action.payload === task.id)
+      const task = state.tasks[taskId]
+      if (task.status === StatusEnum.Doing) {
+        task.status = StatusEnum.Done
+      } else {
+        task.status = StatusEnum.Doing
+      }
       return {
         ...state,
         tasks: [
-          ...state.tasks.splice(0, taskDoneId),
-          taskDone,
-          ...state.tasks.splice(taskDoneId + 1),
+          ...state.tasks.splice(0, taskId),
+          task,
+          ...state.tasks.splice(taskId + 1),
         ],
       }
     default:
@@ -55,10 +57,15 @@ export const actions = {
       type: "TODO/SET_TASKS",
       payload: task,
     } as const),
-  setTask: (name: string, title: string, description: string, done: boolean) =>
+  setTask: (
+    name: string,
+    title: string,
+    description: string,
+    status: StatusEnum
+  ) =>
     ({
       type: "TODO/SET_TASK",
-      payload: { name, title, description, done },
+      payload: { name, title, description, status },
     } as const),
   setDoneTask: (id: string) =>
     ({
@@ -91,8 +98,8 @@ export const getTask = (
 ): TThunk => async (dispatch) => {
   try {
     const response = await todoAPI.getTask(id, CancelToken)
-    const { name, title, description, done } = response.data
-    await dispatch(actions.setTask(name, title, description, done))
+    const { name, title, description, status } = response.data
+    await dispatch(actions.setTask(name, title, description, status))
   } catch (error) {
     showAlert(AlertifyStatusEnum.error, "Не удалось загрузить задачи")
   }
