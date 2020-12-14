@@ -22,6 +22,12 @@ export const todoAPI = {
       .then((response) => console.log(response))
       .catch((err) => handleErr(err))
   },
+  editTask(data: ITask, id: string) {
+    return instance
+      .put(`/notes/${id}.json`, data)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err))
+  },
   deleteTask(id: string) {
     return instance
       .delete(`/notes/${id}.json`)

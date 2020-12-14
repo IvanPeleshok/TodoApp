@@ -10,7 +10,7 @@ type TActions = TInferActions<typeof actions>
 type TThunk = TBaseThunk<TActions>
 
 let initialState = {
-  task: [] as Array<ITask>,
+  tasks: [] as Array<ITask>,
   details: {} as ITask,
   loading: false,
 }
@@ -23,12 +23,26 @@ export const todoReducer = (
     case "TODO/SET_TASKS":
       return {
         ...state,
-        task: [...action.payload],
+        tasks: [...action.payload],
       }
     case "TODO/SET_TASK":
       return {
         ...state,
         details: action.payload,
+      }
+    case "TODO/SET_TASK_DONE":
+      const taskDoneId = state.tasks.findIndex(
+        (task) => action.payload === task.id
+      )
+      const taskDone = state.tasks[taskDoneId]
+      taskDone.done = !taskDone.done
+      return {
+        ...state,
+        tasks: [
+          ...state.tasks.splice(0, taskDoneId),
+          taskDone,
+          ...state.tasks.splice(taskDoneId + 1),
+        ],
       }
     default:
       return state
@@ -41,10 +55,15 @@ export const actions = {
       type: "TODO/SET_TASKS",
       payload: task,
     } as const),
-  setTask: (name: string, title: string, description: string) =>
+  setTask: (name: string, title: string, description: string, done: boolean) =>
     ({
       type: "TODO/SET_TASK",
-      payload: { name, title, description },
+      payload: { name, title, description, done },
+    } as const),
+  setDoneTask: (id: string) =>
+    ({
+      type: "TODO/SET_TASK_DONE",
+      payload: id,
     } as const),
 }
 
@@ -72,10 +91,10 @@ export const getTask = (
 ): TThunk => async (dispatch) => {
   try {
     const response = await todoAPI.getTask(id, CancelToken)
-    const { name, title, description } = response.data
-    await dispatch(actions.setTask(name, title, description))
+    const { name, title, description, done } = response.data
+    await dispatch(actions.setTask(name, title, description, done))
   } catch (error) {
-    console.log("An error has occurred")
+    showAlert(AlertifyStatusEnum.error, "Не удалось загрузить задачи")
   }
 }
 
@@ -85,7 +104,19 @@ export const createTask = (data: ITask): TThunk => async (dispatch) => {
     showAlert(AlertifyStatusEnum.success, "Задача создана")
     dispatch(getTasks())
   } catch (error) {
-    console.log("An error has occurred")
+    showAlert(AlertifyStatusEnum.error, "Задачу не удалось создать")
+  }
+}
+
+export const editTask = (data: ITask, id: string): TThunk => async (
+  dispatch
+) => {
+  try {
+    await todoAPI.editTask(data, id)
+    await dispatch(getTasks())
+    showAlert(AlertifyStatusEnum.success, "Задача успешно изменена")
+  } catch (error) {
+    showAlert(AlertifyStatusEnum.error, "Задача не удалось изменить")
   }
 }
 
@@ -95,6 +126,6 @@ export const deleteTask = (id: string): TThunk => async (dispatch) => {
     showAlert(AlertifyStatusEnum.success, "Задача удалена")
     await dispatch(getTasks())
   } catch (error) {
-    console.log("An error has occurred")
+    showAlert(AlertifyStatusEnum.error, "Задачу не удалось удалить")
   }
 }
