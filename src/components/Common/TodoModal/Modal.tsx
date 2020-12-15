@@ -26,7 +26,6 @@ interface IProps {
 }
 
 export const Modal = memo<IProps>(({ initial, actionFunc, infoAboutPage }) => {
-  console.log("render")
   const history = useHistory()
   const dispatch = useDispatch()
 
