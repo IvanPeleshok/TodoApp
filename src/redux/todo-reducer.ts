@@ -139,7 +139,7 @@ export const getTask = (
   try {
     dispatch(actions.loadingTrue())
     const response = await todoAPI.getTask(id, CancelToken)
-    const { name, title, description, status } = response.data
+    const { name, title, description, status } = response?.data
     await dispatch(actions.setTask(name, title, description, status))
     dispatch(actions.loadingFalse())
   } catch (error) {

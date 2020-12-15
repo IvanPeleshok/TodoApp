@@ -12,9 +12,12 @@ export const todoAPI = {
       .catch((err) => handleErr(err))
   },
   getTask(id: string, cancelToken?: CancelToken) {
-    return instance.get(`/notes/${id}.json`, {
-      cancelToken,
-    })
+    return instance
+      .get(`/notes/${id}.json`, {
+        cancelToken,
+      })
+      .then((response) => response)
+      .catch((err) => handleErr(err))
   },
   createTask(data: ITask) {
     return instance
@@ -29,16 +32,15 @@ export const todoAPI = {
       .catch((err) => handleErr(err))
   },
   toggleStatusTask(status: StatusEnum, id: string) {
-    console.log(status)
     return instance
       .put(`/notes/${id}/status.json`, JSON.stringify(status))
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err))
+      .then((response) => response)
+      .catch((err) => handleErr(err))
   },
   deleteTask(id: string) {
     return instance
       .delete(`/notes/${id}.json`)
-      .then((response) => console.log(response))
+      .then((response) => response)
       .catch((err) => handleErr(err))
   },
 }
