@@ -1,8 +1,8 @@
 import React, { memo } from "react"
 import { Redirect, Route } from "react-router-dom"
 import { Todo } from "./Todo"
-import { Create } from "./Create/Create"
-import { Details } from "./Details/Details"
+import { Create } from "./Modal/Create/Create"
+import { Details } from "./Modal/Details/Details"
 import { Filter } from "./Filter/Filter"
 
 const TodoContainer = memo(() => {

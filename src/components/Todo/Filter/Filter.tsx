@@ -35,7 +35,7 @@ export const Filter = () => {
   }
 
   return (
-    <Popup>
+    <Popup toRoute={"/todo"}>
       <div className={s.filterPage}>
         <FormControl className={classes.formControl}>
           <InputLabel id="demo-controlled-open-select-label">Фильтр</InputLabel>

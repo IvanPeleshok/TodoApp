@@ -1,12 +1,12 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
-import { todoSelectors } from "../../../redux/selectors/selectors"
-import { editTask, getTask, getTasks } from "../../../redux/todo-reducer"
-import { actions } from "../../../redux/todo-reducer"
+import { todoSelectors } from "../../../../redux/selectors/selectors"
+import { editTask, getTask, getTasks } from "../../../../redux/todo-reducer"
+import { actions } from "../../../../redux/todo-reducer"
 import Axios from "axios"
-import { Modal } from "../../Common/TodoModal/Modal"
-import { ITask, StatusEnum } from "../../../interface/todo"
+import { Modal } from "../Modal"
+import { ITask, StatusEnum } from "../../../../interface/todo"
 
 interface IParams {
   id: string

@@ -2,9 +2,9 @@ import React, { FC, memo } from "react"
 import s from "./Modal.module.scss"
 import { Formik, Form } from "formik"
 import * as yup from "yup"
-import { CustomField, Textarea } from "../CustomForm/CustomField"
-import { Popup } from "../Popup/Popup"
-import { CustomButton } from "../CustomForm/CustomButton"
+import { CustomField, Textarea } from "../../Common/CustomForm/CustomField"
+import { Popup } from "../../Common/Popup/Popup"
+import { CustomButton } from "../../Common/CustomForm/CustomButton"
 import { useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { ITask, StatusEnum } from "../../../interface/todo"
@@ -50,7 +50,7 @@ export const Modal = memo<IProps>(({ initial, actionFunc, infoAboutPage }) => {
   })
 
   return (
-    <Popup>
+    <Popup toRoute={"/todo"}>
       <div className={s.createPage}>
         <Formik
           validateOnChange={true}

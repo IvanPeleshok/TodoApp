@@ -1,8 +1,13 @@
-import React, { useEffect, useRef, memo } from "react"
+import React, { useEffect, useRef, memo, ReactNode } from "react"
 import { useHistory } from "react-router-dom"
 import styled from "styled-components"
 
-export const Popup = memo(({ children }) => {
+interface IProps {
+  toRoute: string
+  children: ReactNode
+}
+
+export const Popup = memo<IProps>(({ toRoute, children }) => {
   const modalRef = useRef<HTMLDivElement>(null)
   const history = useHistory()
 
@@ -18,7 +23,7 @@ export const Popup = memo(({ children }) => {
   }, [])
   return (
     <PopupW>
-      <PopupBg onClick={() => history.push("/todo")} />
+      <PopupBg onClick={() => history.push(`${toRoute}`)} />
       <PopUpComponent ref={modalRef}>{children}</PopUpComponent>
     </PopupW>
   )
