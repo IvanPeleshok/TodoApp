@@ -1,5 +1,5 @@
 import React, { memo } from "react"
-import { Route } from "react-router-dom"
+import { Redirect, Route } from "react-router-dom"
 import { Todo } from "./Todo"
 import { Create } from "./Create/Create"
 import { Details } from "./Details/Details"
@@ -11,6 +11,8 @@ const TodoContainer = memo(() => {
       <Route path="/todo/create" exact render={() => <Create />} />
       <Route path="/todo/filter" exact render={() => <Filter />} />
       <Route path="/todo/details/:id" render={() => <Details />} />
+      <Route path="*" render={() => <Redirect to="/todo" />} />
+
       <Todo />
     </>
   )

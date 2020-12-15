@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from "react"
 import s from "../FormComponents.module.scss"
 import contentHolder from "../../../../assets/img/content-holder.png"
-import { loadImage } from "../../utils/loadImage"
+import { loadImage } from "../../../utils/loadImage"
 
 type CustomFieldProps = {
   name: string
