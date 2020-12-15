@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, memo } from "react"
 import s from "./Modal.module.scss"
 import { Formik, Form } from "formik"
 import * as yup from "yup"
@@ -25,7 +25,8 @@ interface IProps {
   actionFunc: (data: ITask) => void
 }
 
-export const Modal: FC<IProps> = ({ initial, actionFunc, infoAboutPage }) => {
+export const Modal = memo<IProps>(({ initial, actionFunc, infoAboutPage }) => {
+  console.log("render")
   const history = useHistory()
   const dispatch = useDispatch()
 
@@ -104,4 +105,4 @@ export const Modal: FC<IProps> = ({ initial, actionFunc, infoAboutPage }) => {
       </div>
     </Popup>
   )
-}
+})
