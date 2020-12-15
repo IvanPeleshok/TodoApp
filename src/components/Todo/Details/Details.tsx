@@ -5,7 +5,7 @@ import { todoSelectors } from "../../../redux/selectors/selectors"
 import { editTask, getTask, getTasks } from "../../../redux/todo-reducer"
 import { actions } from "../../../redux/todo-reducer"
 import Axios from "axios"
-import { Modal } from "../../Common/Modal/Modal"
+import { Modal } from "../../Common/TodoModal/Modal"
 import { ITask, StatusEnum } from "../../../interface/todo"
 
 interface IParams {

@@ -165,7 +165,7 @@ export const editTask = (data: ITask, id: string): TThunk => async (
     await dispatch(getTasks())
     showAlert(AlertifyStatusEnum.success, "Задача успешно изменена")
   } catch (error) {
-    showAlert(AlertifyStatusEnum.error, "Задача не удалось изменить")
+    showAlert(AlertifyStatusEnum.error, "Задачу не удалось изменить")
   }
 }
 
