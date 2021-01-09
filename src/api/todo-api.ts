@@ -1,15 +1,15 @@
-import { CancelToken } from "axios"
+import { AxiosResponse, CancelToken } from "axios"
 import { ITask, StatusEnum } from "../interface/todo"
 import { handleErr, instance } from "./api"
 
 export const todoAPI = {
   getTasks(cancelToken?: CancelToken) {
     return instance
-      .get(`/notes.json`, {
+      .get<AxiosResponse<any>>(`/notes.json`, {
         cancelToken,
       })
-      .then((response) => response)
-      .catch((err) => handleErr(err))
+      .then((response) => response as AxiosResponse<any>) 
+      .catch((err) => handleErr(err))  
   },
   getTask(id: string, cancelToken?: CancelToken) {
     return instance

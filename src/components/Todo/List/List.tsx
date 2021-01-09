@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from "react-redux"
 import { todoSelectors } from "../../../redux/selectors/selectors"
 import s from "./List.module.scss"
 import classnames from "classnames"
-import { actions, deleteTask, getTasks } from "../../../redux/todo-reducer"
+import {
+  actions,
+  deleteTask,
+  editStatus,
+  getTasks,
+} from "../../../redux/todo-reducer"
 import { useHistory, useLocation } from "react-router-dom"
 import Axios from "axios"
 import DeleteIcon from "@material-ui/icons/Delete"
@@ -34,17 +39,8 @@ export const List = memo(() => {
     dispatch(deleteTask(id))
   }
 
-  let task: ITask | undefined
   const handleDone = (id: string) => {
-    task = tasks.find((task) => task.id === id)
-
-    if (task?.status === StatusEnum.Doing) {
-      todoAPI.toggleStatusTask(StatusEnum.Done, id)
-    } else {
-      todoAPI.toggleStatusTask(StatusEnum.Doing, id)
-    }
-
-    dispatch(actions.setStatusTask(id))
+    dispatch(editStatus(id))
   }
 
   return (

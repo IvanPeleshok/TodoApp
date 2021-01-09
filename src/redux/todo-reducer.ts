@@ -9,7 +9,7 @@ export type TInitialState = typeof initialState
 type TActions = TInferActions<typeof actions>
 type TThunk = TBaseThunk<TActions>
 
-let initialState = {
+export let initialState = {
   tasks: [] as Array<ITask>,
   details: {} as ITask,
   loading: false,
@@ -49,7 +49,7 @@ export const todoReducer = (
         ...state,
         details: action.payload,
       }
-    case "TODO/SET_TASK_DONE":
+    case "TODO/SET_TASK_STATUS":
       const taskId = state.tasks.findIndex((task) => action.payload === task.id)
       const task = state.tasks[taskId]
       if (task.status === StatusEnum.Doing) {
@@ -60,9 +60,9 @@ export const todoReducer = (
       return {
         ...state,
         tasks: [
-          ...state.tasks.splice(0, taskId),
+          ...state.tasks.slice(0, taskId),
           task,
-          ...state.tasks.splice(taskId + 1),
+          ...state.tasks.slice(taskId + 1),
         ],
       }
     case "TODO/LOADING_TRUE":
@@ -103,7 +103,7 @@ export const actions = {
     } as const),
   setStatusTask: (id: string) =>
     ({
-      type: "TODO/SET_TASK_DONE",
+      type: "TODO/SET_TASK_STATUS",
       payload: id,
     } as const),
   loadingTrue: () => ({ type: "TODO/LOADING_TRUE" } as const),
@@ -167,6 +167,17 @@ export const editTask = (data: ITask, id: string): TThunk => async (
   } catch (error) {
     showAlert(AlertifyStatusEnum.error, "Задачу не удалось изменить")
   }
+}
+
+export const editStatus = (id: string): TThunk => async (dispatch, getState) => {
+  const task: ITask | undefined = getState().todo.tasks.find((task) => task.id === id)
+
+  if (task?.status === StatusEnum.Doing) {
+    todoAPI.toggleStatusTask(StatusEnum.Done, id)
+  } else {
+    todoAPI.toggleStatusTask(StatusEnum.Doing, id)
+  }
+  dispatch(actions.setStatusTask(id))
 }
 
 export const deleteTask = (id: string): TThunk => async (dispatch) => {
